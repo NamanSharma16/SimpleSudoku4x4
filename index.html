@@ -7,7 +7,7 @@
     <body>
         <header>
             <div id="reset">RESET</div>
-            <div id="score">SOLVE</div>
+            <div id="solve">SOLVE</div>
             <div id="check">CHECK</div>
         </header>
         <main id="game">
@@ -28,6 +28,11 @@
             <input type = 'text' id = 't14' class = 'four'>
             <input type = 'text' id = 't15' class = 'four'>
         </main>
-
+        <script type="text/javascript">
+            function onBodyLoad() {
+                Game.init();
+            }
+            window.addEventListener('load', onBodyLoad);
+        </script>
     </body>
 </html>

@@ -38,9 +38,8 @@ var Game = (function() {
 		return true;
 	}
 
-
 	function findEmpty(pos) {
-console.log('inside findEmpty');
+		console.log('inside findEmpty');
   		for(var i = 0; i < size; i++) {
     		for(var j = 0; j < size; j++) {
       			if(mat[i][j] === 0) {
@@ -53,24 +52,23 @@ console.log('inside findEmpty');
   		return false;
 	}
 
-
 	function solve(){
 		console.log('inside solve');
-		var pos = {row : 0, col : 0}
-	    if(!findEmpty(pos))
+		var pos = {row : 0, col : 0}//why is no semi-colon given here
+	    if(!findEmpty(pos))// call to findEmpty function
     		return true;
 
   		for(var num = 1; num <= 4; num++) {
   			console.log(mat);
      		if(checkIfPosOK(num, pos.row, pos.col)) {
        			mat[pos.row][pos.col] = num;
-console.log('inside loop of solve and num is ' + num);
+				console.log('inside loop of solve and num is ' + num);
   	     		if(solve())
          			return true;
-console.log('need to backtrack --- ' + num);
+				console.log('need to backtrack --- ' + num);
     	   		mat[pos.row][pos.col] = 0;
-     		}
-  		}
+     		}//if checkIfPosOk
+  		}// num for
   		return false;
 	}
 
@@ -81,7 +79,7 @@ console.log('need to backtrack --- ' + num);
 			for(j = 0; j < size; j++) {
 				x = 4*i + j;
 				str = 't' + x;
-				myEl = document.getElementById(str);
+				myEl = document.getElementById(str);// select ID t0,t1...so on.
 				val = '' + mat[i][j]
 				myEl.value = val
 			}
@@ -100,16 +98,15 @@ console.log('need to backtrack --- ' + num);
 			alert('Awesome!!')
 	}
 
-
 	function magic() {
 		console.log('inside magic');
-		if(solve()) {
+		if(solve()) {           // call to function solve()
 			console.log('solve successful');
 			print();
 		}
 		else {
 			print();
-			showDialog();
+			showDialog(); // call funcion showDialog()
 		}			
 	}
 
@@ -120,7 +117,7 @@ console.log('need to backtrack --- ' + num);
 				if(display[i][j] == 0) {
 					x = 4*i + j;
 					str = 't' + x;
-					myEl = document.getElementById(str);
+					myEl = document.getElementById(str); //select what??
 					val = '';
 					myEl.value = val; 
 				}
@@ -169,8 +166,8 @@ console.log('need to backtrack --- ' + num);
  			return false;
  		}
 
- 		var boxStartRow = Math.floor((row/2)) * 2;
- 		var boxStartCol = Math.floor((col/2)) * 2;
+ 		var boxStartRow = Math.floor((row/2)) * 2;  //using floor function from Math library
+ 		var boxStartCol = Math.floor((col/2)) * 2;	//using floor function from Math library
  		ctr = 0;
  		for(var i = boxStartRow; i < boxStartRow + 2; i++){
     		for(var j = boxStartCol; j < boxStartCol + 2; j++){
@@ -186,36 +183,36 @@ console.log('need to backtrack --- ' + num);
 	}
 
 	function checkMate() {
-		if(!initCheckArray()) {
-			showDialogCheck(0);
+		if(!initCheckArray()) { //call function initCheckArray()
+			showDialogCheck(0);   //call function showDialogCheck()
 			return;
 		}
 			
 
 		for(var i = 0; i < size; i++) {
 			for(var j = 0; j < size; j++) {
-				if(!check(checkArray[i][j], i, j)) {
-					showDialogCheck(0);
+				if(!check(checkArray[i][j], i, j)) {  //call function Check()
+					showDialogCheck(0);   //call function showDialogCheck()
 					return;
 				}					
 			}
 		}
-		showDialogCheck(1);
+		showDialogCheck(1);   //call function showDialogCheck()
 		return;
 	}
 
 
 	function init() {
-		initDispArray();
+		initDispArray(); // call function initDispArray()
 
-		var solveButton = document.getElementById('solve');
-		solveButton.addEventListener('click', magic);
+		var solveButton = document.getElementById('solve'); // selecting ID 'solve' from css
+		solveButton.addEventListener('click', magic);  //on -click --> call function magic()
 
-		var checkButton = document.getElementById('check');
-		checkButton.addEventListener('click', checkMate);
+		var checkButton = document.getElementById('check'); // selecting ID 'check' from css
+		checkButton.addEventListener('click', checkMate);// on -click --> call function checkMate()
 		
-		var resetButton = document.getElementById('reset');
-		resetButton.addEventListener('click', reset);
+		var resetButton = document.getElementById('reset');  // selecting ID 'reset' from css
+		resetButton.addEventListener('click', reset);// on -click --> call function reset()
 	}
 
 	return {

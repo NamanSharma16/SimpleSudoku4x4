@@ -73,6 +73,9 @@ button {
     display: block;
     transition-duration: 0.4s;
 }
+button:focus { /*this removes the blue border that appears when the button is clicked*/
+  outline:0;
+}
 
 #reset {
     background-color: #4CAF50; 

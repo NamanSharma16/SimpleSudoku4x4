@@ -1,10 +1,10 @@
-var Game = (function() {
+var Game = (function() { // Game beng called from internal script 
 	var mat = [[1, 0, 3, 0],[0, 0, 2, 1],[0, 1, 0, 2],[2, 4, 0, 0]]
 	var display = [[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]];
 	var checkArray = [[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]];
 	var size = 4;
 	var set = {1: 'ok', 2: 'ok', 3: 'ok', 4: 'ok'}
-
+	var solved = false;
 	function initDispArray() {
 		for(var i = 0; i < size; i++) {
 			for(var j = 0; j < size; j++) {
@@ -103,11 +103,18 @@ var Game = (function() {
 		if(solve()) {           // call to function solve()
 			console.log('solve successful');
 			print();
+			solved = true;
+		
+			// var checkButton = document.getElementById('check');
+			// checkButton.disabled = true;
 		}
 		else {
 			print();
 			showDialog(); // call funcion showDialog()
-		}			
+		}
+		
+
+
 	}
 
 	function reset() {
@@ -123,6 +130,7 @@ var Game = (function() {
 				}
 			}
 		}
+		solved = false;
 	}
 
 	function initCheckArray() {
@@ -150,59 +158,65 @@ var Game = (function() {
 	function check(num, row, col) {
 		var ctr = 0;
 		for(var i = 0; i < size; i++) {
-        	if(checkArray[i][col] === num)
-        		ctr++;            	
- 		}
- 		if(ctr > 1) {
- 			return false;
- 		}
+	    	if(checkArray[i][col] === num)
+	    		ctr++;            	
+			}
+			if(ctr > 1) {
+				return false;
+			}
 
- 		ctr = 0;
- 		for(var j = 0; j < size; j++) {
-        	if(checkArray[row][j] === num)
-        		ctr++;
- 		}
- 		if(ctr > 1) {
- 			return false;
- 		}
+			ctr = 0;
+			for(var j = 0; j < size; j++) {
+	    	if(checkArray[row][j] === num)
+	    		ctr++;
+			}
+			if(ctr > 1) {
+				return false;
+			}
 
- 		var boxStartRow = Math.floor((row/2)) * 2;  //using floor function from Math library
- 		var boxStartCol = Math.floor((col/2)) * 2;	//using floor function from Math library
- 		ctr = 0;
- 		for(var i = boxStartRow; i < boxStartRow + 2; i++){
-    		for(var j = boxStartCol; j < boxStartCol + 2; j++){
-        		if(checkArray[i][j] === num)
-            		ctr++;
-    		}
- 		}
- 		if(ctr > 1) {
- 			return false;
- 		}
- 		console.log('returning true from checkIfPosOK for the num ' + num);
+			var boxStartRow = Math.floor((row/2)) * 2;  //using floor function from Math library
+			var boxStartCol = Math.floor((col/2)) * 2;	//using floor function from Math library
+			ctr = 0;
+			for(var i = boxStartRow; i < boxStartRow + 2; i++){
+			for(var j = boxStartCol; j < boxStartCol + 2; j++){
+	    		if(checkArray[i][j] === num)
+	        		ctr++;
+			}
+			}
+			if(ctr > 1) {
+				return false;
+			}
+			console.log('returning true from checkIfPosOK for the num ' + num);
 		return true;
-	}
+		}
 
 	function checkMate() {
-		if(!initCheckArray()) { //call function initCheckArray()
-			showDialogCheck(0);   //call function showDialogCheck()
+		if(!solved){ // to disable CHECK if sudoku is already solved through 'SOLVE' button
+			if(!initCheckArray()) { //call function initCheckArray()
+				showDialogCheck(0);   //call function showDialogCheck()
+				return;
+			}
+				
+	
+			for(var i = 0; i < size; i++) {
+				for(var j = 0; j < size; j++) {
+					if(!check(checkArray[i][j], i, j)) {  //call function Check()
+						showDialogCheck(0);   //call function showDialogCheck()
+						return;
+					}					
+				}
+			}
+			showDialogCheck(1);   //call function showDialogCheck()
 			return;
 		}
-			
 
-		for(var i = 0; i < size; i++) {
-			for(var j = 0; j < size; j++) {
-				if(!check(checkArray[i][j], i, j)) {  //call function Check()
-					showDialogCheck(0);   //call function showDialogCheck()
-					return;
-				}					
-			}
-		}
-		showDialogCheck(1);   //call function showDialogCheck()
-		return;
+		else
+				alert("This Sudoku has already been solved. Press RESET to start again");
 	}
 
 
-	function init() {
+	function init() { // function being called from internal script through Game.init
+		//function contains Events w.r.t different buttons in the <header>
 		initDispArray(); // call function initDispArray()
 
 		var solveButton = document.getElementById('solve'); // selecting ID 'solve' from css
@@ -216,7 +230,7 @@ var Game = (function() {
 	}
 
 	return {
-		init : init
+		init : init // reference to init function beng returned to the call site 
 	};
 
 })();
